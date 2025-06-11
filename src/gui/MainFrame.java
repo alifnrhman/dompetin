@@ -22,4 +22,5 @@ public class MainFrame {
     private JLabel tfJumlah;
     private JLabel tfTanggal;
     private JLabel tfKeterangan;
+
 }
