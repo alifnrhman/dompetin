@@ -6,6 +6,7 @@ public class Transaksi {
     private double jumlah;
     private String tanggal;
     private String keterangan;
+    private int id;
 
     public Transaksi(String jenis, String kategori, double jumlah, String tanggal, String keterangan) {
         this.jenis = jenis;
@@ -16,6 +17,9 @@ public class Transaksi {
     }
 
     // Getter & Setter
+    public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
+
     public String getJenis() { return jenis; }
     public void setJenis(String jenis) { this.jenis = jenis; }
 
