@@ -8,7 +8,8 @@ public class Transaksi {
     private String keterangan;
     private int id;
 
-    public Transaksi(String jenis, String kategori, double jumlah, String tanggal, String keterangan) {
+    public Transaksi(int id, String jenis, String kategori, double jumlah, String tanggal, String keterangan) {
+        this.id = id;
         this.jenis = jenis;
         this.kategori = kategori;
         this.jumlah = jumlah;
