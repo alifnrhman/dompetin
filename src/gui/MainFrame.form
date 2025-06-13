@@ -58,7 +58,7 @@
               <text value="Daftar Bulanan"/>
             </properties>
           </component>
-          <component id="8cbf3" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+          <component id="8cbf3" class="javax.swing.JComboBox" binding="dropBulan">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="4" fill="2" indent="0" use-parent-layout="false">
                 <preferred-size width="100" height="-1"/>
@@ -67,6 +67,19 @@
             <properties>
               <model>
                 <item value="Bulan"/>
+                <item value=""/>
+                <item value="Januari"/>
+                <item value="Februari"/>
+                <item value="Maret"/>
+                <item value="April"/>
+                <item value="Mei"/>
+                <item value="Juni"/>
+                <item value="Juli"/>
+                <item value="Agustus"/>
+                <item value="September"/>
+                <item value="Oktober"/>
+                <item value="November"/>
+                <item value="Desember"/>
               </model>
             </properties>
           </component>
@@ -88,7 +101,7 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
-          <component id="c5fc2" class="javax.swing.JComboBox" binding="comboBox3" default-binding="true">
+          <component id="c5fc2" class="javax.swing.JComboBox" binding="dropTahun">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="4" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="100" height="-1"/>
@@ -98,6 +111,14 @@
               <alignmentX value="1.0"/>
               <model>
                 <item value="Tahun"/>
+                <item value=""/>
+                <item value="2024"/>
+                <item value="2025"/>
+                <item value="2026"/>
+                <item value="2027"/>
+                <item value="2028"/>
+                <item value="2029"/>
+                <item value="2030"/>
               </model>
             </properties>
           </component>
@@ -133,7 +154,7 @@
               <text value="Jenis:"/>
             </properties>
           </component>
-          <component id="d0899" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+          <component id="d0899" class="javax.swing.JComboBox" binding="dropJenis">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -152,7 +173,7 @@
               <text value="Kategori:"/>
             </properties>
           </component>
-          <component id="7828f" class="javax.swing.JComboBox" binding="comboBox4" default-binding="true">
+          <component id="7828f" class="javax.swing.JComboBox" binding="dropKategori">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -173,7 +194,7 @@
               <text value="Jumlah:"/>
             </properties>
           </component>
-          <component id="a7f58" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+          <component id="a7f58" class="javax.swing.JTextField" binding="fldJumlah">
             <constraints>
               <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -189,7 +210,7 @@
               <text value="Tanggal (YYYY-MM-DD):"/>
             </properties>
           </component>
-          <component id="7b240" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+          <component id="7b240" class="javax.swing.JTextField" binding="fldTanggal">
             <constraints>
               <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -205,7 +226,7 @@
               <text value="Keterangan:"/>
             </properties>
           </component>
-          <component id="b5b9b" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+          <component id="b5b9b" class="javax.swing.JTextField" binding="fldKeterangan">
             <constraints>
               <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>

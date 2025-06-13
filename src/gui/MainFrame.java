@@ -9,14 +9,14 @@ public class MainFrame {
     private JButton tambahButton;
     private JButton hapusButton;
     private JButton editButton;
-    private JComboBox comboBox1;
+    private JComboBox dropBulan;
     private JTable TableBulanan;
-    private JComboBox comboBox3;
+    private JComboBox dropTahun;
     private JPanel PanelForm;
-    private JComboBox comboBox2;
-    private JComboBox comboBox4;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JComboBox dropJenis;
+    private JComboBox dropKategori;
+    private JTextField fldJumlah;
+    private JTextField fldTanggal;
+    private JTextField fldKeterangan;
     private JButton simpanButton;
 }
