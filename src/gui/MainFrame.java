@@ -8,10 +8,13 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainFrame extends JFrame {
@@ -20,9 +23,9 @@ public class MainFrame extends JFrame {
     private DefaultTableModel tableModel;
     private JComboBox cbBulan, cbTahun;
     private JButton editButton;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField tfTotalPemasukan;
+    private JTextField tfTotalPengeluaran;
+    private JTextField tfSaldo;
     private JButton hapusButton;
     private JButton tambahButton;
     private JButton simpanButton;
@@ -43,11 +46,28 @@ public class MainFrame extends JFrame {
         setResizable(false);
         setSize(800, 610);
         setLocationRelativeTo(null);
-        loadDataKeTable();
+
+        String[] bulan = {"Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+        cbBulan.setModel(new DefaultComboBoxModel<>(bulan));
+
+        for (int tahun = 2020; tahun <= 2030; tahun++) {
+            cbTahun.addItem(String.valueOf(tahun));
+        }
+
+
+        LocalDate now = LocalDate.now();
+        cbBulan.setSelectedIndex(now.getMonthValue() - 1);
+        cbTahun.setSelectedItem(String.valueOf(now.getYear()));
 
         PanelMain.setLayout(new CardLayout());
         PanelMain.add(PanelTable, "table");
         PanelMain.add(PanelForm, "form");
+
+        tampilkanDataBerdasarkanFilter();
+
+        cbBulan.addActionListener(e -> tampilkanDataBerdasarkanFilter());
+        cbTahun.addActionListener(e -> tampilkanDataBerdasarkanFilter());
 
         tambahButton.addActionListener(new ActionListener() {
             @Override
@@ -113,7 +133,7 @@ public class MainFrame extends JFrame {
 
                     JOptionPane.showMessageDialog(null, "Transaksi berhasil ditambahkan");
                     showTable();
-                    loadDataKeTable();
+                    tampilkanDataBerdasarkanFilter();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Input tidak valid: " + ex.getMessage());
                 }
@@ -161,16 +181,15 @@ public class MainFrame extends JFrame {
         cl.show(PanelMain, "table");
     }
 
-    public void loadDataKeTable() {
+    public void tampilkanDataKeTabel(List<Transaksi> dataList) {
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"No", "Tanggal", "Jenis", "Kategori", "Jumlah", "Keterangan", "ID"}, 0
         );
 
         // Ambil data
-        List<Transaksi> transaksiList = dbHelper.getAllTransaksi();
 
         int no = 1; // Nomor urut dimulai dari 1
-        for (Transaksi t : transaksiList) {
+        for (Transaksi t : dataList) {
             model.addRow(new Object[]{
                     no++,
                     t.getTanggal(),
@@ -185,14 +204,50 @@ public class MainFrame extends JFrame {
         TableBulanan.setModel(model);
 
         // kolom "No"
-        TableColumn noColumn = TableBulanan.getColumnModel().getColumn(0);
-        noColumn.setPreferredWidth(40);
-        noColumn.setMinWidth(30);
-        noColumn.setMaxWidth(50);
+        TableBulanan.getColumnModel().getColumn(0).setMinWidth(30);
+        TableBulanan.getColumnModel().getColumn(0).setPreferredWidth(30);
+        TableBulanan.getColumnModel().getColumn(0).setMaxWidth(40);
 
         // Sembunyikan kolom ID
         TableBulanan.getColumnModel().getColumn(6).setMinWidth(0);
         TableBulanan.getColumnModel().getColumn(6).setMaxWidth(0);
         TableBulanan.getColumnModel().getColumn(6).setWidth(0);
     }
+
+    public void tampilkanDataBerdasarkanFilter() {
+        int bulanDipilih = cbBulan.getSelectedIndex() + 1;
+        String tahunDipilih = (String) cbTahun.getSelectedItem();
+
+        List<Transaksi> semuaTransaksi = dbHelper.getAllTransaksi();
+        List<Transaksi> transaksiFiltered = new ArrayList<>();
+
+        long totalMasuk = 0;
+        long totalKeluar = 0;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        for (Transaksi tr : semuaTransaksi) {
+            try {
+                LocalDate tanggal = LocalDate.parse(tr.getTanggal(), formatter);
+                if (tanggal.getMonthValue() == bulanDipilih && tanggal.getYear() == Integer.parseInt(tahunDipilih)) {
+                    transaksiFiltered.add(tr);
+                    if (tr.getJenis().equalsIgnoreCase("Pemasukan")) {
+                        totalMasuk += tr.getJumlah();
+                    } else if (tr.getJenis().equalsIgnoreCase("Pengeluaran")) {
+                        totalKeluar += tr.getJumlah();
+                    }
+                }
+            } catch (DateTimeParseException e) {
+                System.err.println("Format tanggal salah: " + tr.getTanggal());
+            }
+        }
+
+        long saldo = totalMasuk - totalKeluar;
+
+        tampilkanDataKeTabel(transaksiFiltered);
+        tfTotalPemasukan.setText("Rp" + totalMasuk);
+        tfTotalPengeluaran.setText("Rp" + totalKeluar);
+        tfSaldo.setText("Rp" + saldo);
+    }
+
 }
