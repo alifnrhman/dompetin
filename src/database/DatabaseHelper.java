@@ -10,42 +10,49 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHelper {
+public class DatabaseHelper extends Database {
     public static final String DB_URL = "jdbc:sqlite:dompetin.db";
-    public static Connection connect() {
-        Connection conn = null;
+
+    @Override
+    public Connection connect() {
         try {
-            conn = DriverManager.getConnection(DB_URL);
+            System.out.println("Koneksi berhasil");
+            return DriverManager.getConnection(DB_URL);
         } catch (Exception e) {
             System.out.println("Koneksi gagal: " + e.getMessage());
+            return null;
         }
-        return conn;
     }
+
     public void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS transaksi ("+
-                "id INT PRIMARY KEY AUTOINCREMENT, "+
-                "jenis TEXT not null, "+
-                "kategori TEXT not null, "+
-                "jumlah INT not null, "+
-                "tanggal TEXT not null, "+
-                "keterangan TEXT";
+        String sql = """
+        CREATE TABLE IF NOT EXISTS transaksi (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            jenis TEXT NOT NULL,
+            kategori TEXT NOT NULL,
+            jumlah DOUBLE NOT NULL,
+            tanggal TEXT NOT NULL,
+            keterangan TEXT
+        );
+        """;
 
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
+            System.out.println("Tabel 'transaksi' berhasil dibuat!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Gagal membuat tabel: " + e.getMessage());
         }
     }
 
     public boolean insertTransaksi(Transaksi tr) {
         String sql = "INSERT INTO transaksi(jenis, kategori, jumlah, tanggal, keterangan) VALUES(?, ?, ?, ?, ?)";
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1, tr.getJenis());
             pstmt.setString(2, tr.getKategori());
             pstmt.setDouble(3, tr.getJumlah());
             pstmt.setString(4, tr.getTanggal());
             pstmt.setString(5, tr.getKeterangan());
+
             pstmt.executeUpdate();
             System.out.println("Transaksi berhasil ditambahkan.");
             return true;
@@ -97,27 +104,27 @@ public class DatabaseHelper {
             return false;
         }
     }
-        public List<Transaksi> getAllTransaksi() {
-            List<Transaksi> transaksiList = new ArrayList<>();
-            String sql = "SELECT id, jenis, kategori, jumlah, tanggal, keterangan FROM Transaksi";
-            try (Connection conn = connect();
-                 Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery(sql)) {
-                while (rs.next()){
-                    Transaksi transaksi = new Transaksi(
-                            rs.getInt("id"),
-                            rs.getString("jenis"),
-                            rs.getString("kategori"),
-                            rs.getDouble("jumlah"),
-                            rs.getString("tanggal"),
-                            rs.getString("keterangan"));
+
+    public List<Transaksi> getAllTransaksi() {
+        List<Transaksi> transaksiList = new ArrayList<>();
+        String sql = "SELECT id, jenis, kategori, jumlah, tanggal, keterangan FROM Transaksi";
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()){
+                Transaksi transaksi = new Transaksi(
+                        rs.getInt("id"),
+                        rs.getString("jenis"),
+                        rs.getString("kategori"),
+                        rs.getLong("jumlah"),
+                        rs.getString("tanggal"),
+                        rs.getString("keterangan"));
                     transaksiList.add(transaksi);
                 }
-
-                } catch (SQLException e){
-                e.printStackTrace();
-            }
-            return transaksiList;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return transaksiList;
     }
 
     public List<Transaksi> getTransaksiByMonth(String month, String year) {
@@ -135,7 +142,7 @@ public class DatabaseHelper {
                         rs.getInt("id"),
                         rs.getString("jenis"),
                         rs.getString("kategori"),
-                        rs.getDouble("jumlah"),
+                        rs.getLong("jumlah"),
                         rs.getString("tanggal"),
                         rs.getString("keterangan")
                 );

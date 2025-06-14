@@ -1,7 +1,7 @@
 package models;
 
 public class Pengeluaran extends Transaksi {
-    public Pengeluaran(String kategori, double jumlah, String tanggal, String keterangan) {
-        super("Pengeluaran", kategori, jumlah, tanggal, keterangan);
+    public Pengeluaran(Integer id, String kategori, long jumlah, String tanggal, String keterangan) {
+        super(id, "Pengeluaran", kategori, jumlah, tanggal, keterangan);
     }
 }
