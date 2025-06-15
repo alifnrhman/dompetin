@@ -49,7 +49,7 @@ public class DatabaseHelper extends Database {
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1, tr.getJenis());
             pstmt.setString(2, tr.getKategori());
-            pstmt.setDouble(3, tr.getJumlah());
+            pstmt.setLong(3, tr.getJumlah());
             pstmt.setString(4, tr.getTanggal());
             pstmt.setString(5, tr.getKeterangan());
 
@@ -63,15 +63,16 @@ public class DatabaseHelper extends Database {
     }
 
     public boolean updateTransaksi(Transaksi tr) {
-        String sql = "UPDATE transaksi set jenis = ?, kategori = ?, jumlah = ?, tanggal = ?, keterangan = ? WHERE id = ?";
+        String sql = "UPDATE transaksi SET jenis = ?, kategori = ?, jumlah = ?, tanggal = ?, keterangan = ? WHERE id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1, tr.getJenis());
             pstmt.setString(2, tr.getKategori());
-            pstmt.setDouble(3, tr.getJumlah());
+            pstmt.setLong(3, tr.getJumlah());
             pstmt.setString(4, tr.getTanggal());
             pstmt.setString(5, tr.getKeterangan());
             pstmt.setInt(6, tr.getId());
+
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 System.out.println("Transaksi berhasil diperbarui.");

@@ -11,9 +11,9 @@ public class Main {
         db.createTable();
 
         FlatLightLaf.setup();
-        UIManager.put("Button.arc", 20);
-        UIManager.put("Component.arc", 15); // semua komponen umum
-        UIManager.put("TextComponent.arc", 15); // textfield, textarea, dll
+        UIManager.put("Button.arc", 10);
+        UIManager.put("Component.arc", 10); // semua komponen umum
+        UIManager.put("TextComponent.arc", 10); // textfield, textarea, dll
 
         // Tampilkan GUI (di thread Swing)
         SwingUtilities.invokeLater(() -> {
