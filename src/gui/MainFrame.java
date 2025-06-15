@@ -413,7 +413,6 @@ public class MainFrame extends JFrame {
         if (cbKategori.getItemCount() > 0)
             cbKategori.setSelectedIndex(0);
 
-        // Jika tanggal pakai JTextField
         tfTanggal.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
         // Matikan tombol simpan jika perlu
