@@ -49,7 +49,6 @@ public class MainFrame extends JFrame {
     private DatabaseHelper dbHelper = new DatabaseHelper();
     List<Transaksi> transaksiList = dbHelper.getAllTransaksi();
 
-
     public MainFrame() {
         setTitle("Dompetin");
         setContentPane(PanelMain);
@@ -65,7 +64,6 @@ public class MainFrame extends JFrame {
         for (int tahun = 2020; tahun <= 2030; tahun++) {
             cbTahun.addItem(String.valueOf(tahun));
         }
-
 
         LocalDate now = LocalDate.now();
         cbBulan.setSelectedIndex(now.getMonthValue() - 1);
@@ -227,7 +225,6 @@ public class MainFrame extends JFrame {
         tfJumlah.getDocument().addDocumentListener(listener);
         tfEditJumlah.getDocument().addDocumentListener(listener);
 
-
         batalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -253,9 +250,12 @@ public class MainFrame extends JFrame {
     public void tampilkanDataKeTabel(List<Transaksi> transaksiList) {
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"No", "Tanggal", "Jenis", "Kategori", "Jumlah", "Keterangan", "ID"}, 0
-        );
-
-        // Ambil data
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Semua sel tidak bisa diedit
+            }
+        };
 
         int no = 1; // Nomor urut dimulai dari 1
         for (Transaksi t : transaksiList) {
@@ -271,6 +271,9 @@ public class MainFrame extends JFrame {
         }
 
         TableBulanan.setModel(model);
+        TableBulanan.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // hanya satu row bisa dipilih
+        TableBulanan.setRowSelectionAllowed(true); // izinkan memilih row
+        TableBulanan.setColumnSelectionAllowed(false); // tidak perlu column selection
 
         // Renderer untuk kolom "Jenis"
         TableBulanan.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {

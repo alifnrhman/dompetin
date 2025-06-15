@@ -75,7 +75,10 @@
             <children>
               <component id="c7e49" class="javax.swing.JTable" binding="TableBulanan">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <enabled value="true"/>
+                  <focusable value="false"/>
+                </properties>
               </component>
             </children>
           </scrollpane>
