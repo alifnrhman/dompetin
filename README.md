@@ -54,7 +54,7 @@ This project uses:
 * [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc) for local database
 * Java Swing for the GUI
 
-## 👨‍💻 Developers
+## Developers
 
 - **Alif Nurahman** — [@alifnrhman](https://github.com/alifnrhman)
 - **Miko Meidilianto** — [@mikomeidilianto](https://github.com/mikomeidilianto)
