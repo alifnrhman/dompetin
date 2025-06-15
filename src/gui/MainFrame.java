@@ -51,6 +51,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         setTitle("Dompetin");
+        setIconImage(new ImageIcon(getClass().getResource("/assets/logo.png")).getImage());
         setContentPane(PanelMain);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
