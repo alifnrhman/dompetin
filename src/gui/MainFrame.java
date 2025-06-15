@@ -7,6 +7,7 @@ import utils.Utils;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -54,7 +55,7 @@ public class MainFrame extends JFrame {
         setContentPane(PanelMain);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(800, 610);
+        setSize(800, 600);
         setLocationRelativeTo(null);
 
         String[] bulan = {"Januari", "Februari", "Maret", "April", "Mei", "Juni",
@@ -149,9 +150,24 @@ public class MainFrame extends JFrame {
                 try {
                     String jenis = (String) cbJenis.getSelectedItem();
                     String kategori = (String) cbKategori.getSelectedItem();
-                    long jumlah = Utils.parseRupiah(tfJumlah.getText());
-                    String tanggal = tfTanggal.getText();
-                    String keterangan = tfKeterangan.getText();
+                    String jumlahText = tfJumlah.getText().trim();
+                    String tanggal = tfTanggal.getText().trim();
+                    String keterangan = tfKeterangan.getText().trim();
+
+                    // Validasi field kosong
+                    if (jenis == null || kategori == null || jumlahText.isEmpty() || tanggal.isEmpty() || keterangan.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Semua field harus diisi!", "Validasi", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+
+                    long jumlah;
+
+                    try {
+                        jumlah = Utils.parseRupiah(jumlahText);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Jumlah harus berupa angka yang valid!", "Validasi", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
 
                     Transaksi transaksi = new Transaksi(jenis, kategori, jumlah, tanggal, keterangan);
                     new DatabaseHelper().insertTransaksi(transaksi);
@@ -245,7 +261,7 @@ public class MainFrame extends JFrame {
         for (Transaksi t : transaksiList) {
             model.addRow(new Object[]{
                     no++,
-                    t.getTanggal(),
+                    Utils.formatTanggalLengkap(t.getTanggal()),
                     t.getJenis(),
                     t.getKategori(),
                     Utils.formatRupiah(t.getJumlah()),
@@ -255,6 +271,51 @@ public class MainFrame extends JFrame {
         }
 
         TableBulanan.setModel(model);
+
+        // Renderer untuk kolom "Jenis"
+        TableBulanan.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus, int row, int column) {
+
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                String jenis = value.toString();
+
+                if (jenis.equalsIgnoreCase("Pemasukan")) {
+                    label.setForeground(new Color(0, 153, 0)); // Hijau
+                } else if (jenis.equalsIgnoreCase("Pengeluaran")) {
+                    label.setForeground(new Color(204, 0, 0)); // Merah
+                } else {
+                    label.setForeground(Color.BLACK);
+                }
+
+                return label;
+            }
+        });
+
+        // Renderer untuk kolom "Jumlah"
+        TableBulanan.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus, int row, int column) {
+
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Ambil nilai dari kolom "Jenis" di baris yang sama
+                String jenis = table.getValueAt(row, 2).toString();
+
+                if (jenis.equalsIgnoreCase("Pemasukan")) {
+                    label.setForeground(new Color(0, 153, 0)); // Hijau
+                } else if (jenis.equalsIgnoreCase("Pengeluaran")) {
+                    label.setForeground(new Color(204, 0, 0)); // Merah
+                } else {
+                    label.setForeground(Color.BLACK);
+                }
+
+                return label;
+            }
+        });
+
 
         // kolom "No"
         TableBulanan.getColumnModel().getColumn(0).setMinWidth(30);
