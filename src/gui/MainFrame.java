@@ -124,6 +124,18 @@ public class MainFrame extends JFrame {
             }
         });
 
+        editButton.addActionListener(e -> {
+            int selectedRow = TableBulanan.getSelectedRow();
+            if (selectedRow != -1) {
+                int modelRow = TableBulanan.convertRowIndexToModel(selectedRow);
+                Transaksi tr = transaksiList.get(modelRow);
+
+                showEditDialog(tr);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tidak ada data yang dipilih.");
+            }
+        });
+
         kembaliButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,22 +157,12 @@ public class MainFrame extends JFrame {
                     new DatabaseHelper().insertTransaksi(transaksi);
 
                     JOptionPane.showMessageDialog(null, "Transaksi berhasil ditambahkan");
+                    resetFormTambah();
                     showTable();
                     tampilkanDataBerdasarkanFilter();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Input tidak valid: " + ex.getMessage());
                 }
-            }
-        });
-
-
-        editButton.addActionListener(e -> {
-            int selectedRow = TableBulanan.getSelectedRow();
-            if (selectedRow >= 0 && selectedRow < transaksiList.size()) {
-                Transaksi tr = transaksiList.get(selectedRow);
-                showEditDialog(tr);
-            } else {
-                JOptionPane.showMessageDialog(this, "Tidak ada data yang dipilih.");
             }
         });
 
@@ -221,6 +223,7 @@ public class MainFrame extends JFrame {
     private void showForm() {
         CardLayout cl = (CardLayout) PanelMain.getLayout();
         cl.show(PanelMain, "form");
+        tfTanggal.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
     private void showTable() {
         CardLayout cl = (CardLayout) PanelMain.getLayout();
@@ -298,6 +301,8 @@ public class MainFrame extends JFrame {
         labelPemasukan.setText(Utils.formatRupiah(totalMasuk));
         labelPengeluaran.setText(Utils.formatRupiah(totalKeluar));
         labelSaldo.setText(Utils.formatRupiah(saldo));
+
+        transaksiList = transaksiFiltered;
     }
 
     private void showEditDialog(Transaksi tr) {
@@ -309,6 +314,12 @@ public class MainFrame extends JFrame {
         tfEditTanggal.setText(tr.getTanggal());
         tfEditKeterangan.setText(tr.getKeterangan());
 
+        // Hapus semua listener lama
+        for (ActionListener al : simpanEditButton.getActionListeners()) {
+            simpanEditButton.removeActionListener(al);
+        }
+
+        // Tambahkan listener baru
         simpanEditButton.addActionListener(e -> {
             tr.setJenis(cbEditJenis.getSelectedItem().toString());
             tr.setKategori(cbEditKategori.getSelectedItem().toString());
@@ -322,8 +333,26 @@ public class MainFrame extends JFrame {
                 tampilkanDataBerdasarkanFilter();
             } else {
                 JOptionPane.showMessageDialog(this, "Gagal memperbarui data.");
+                System.err.println("Update gagal untuk ID: " + tr.getId());
             }
         });
+    }
+
+    private void resetFormTambah() {
+        tfJumlah.setText("");
+        tfKeterangan.setText("");
+
+        if (cbJenis.getItemCount() > 0)
+            cbJenis.setSelectedIndex(0);
+
+        if (cbKategori.getItemCount() > 0)
+            cbKategori.setSelectedIndex(0);
+
+        // Jika tanggal pakai JTextField
+        tfTanggal.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        // Matikan tombol simpan jika perlu
+        simpanButton.setEnabled(false);
     }
 }
 

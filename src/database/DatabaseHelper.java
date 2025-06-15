@@ -127,32 +127,5 @@ public class DatabaseHelper extends Database {
         }
         return transaksiList;
     }
-
-    public List<Transaksi> getTransaksiByMonth(String month, String year) {
-        List<Transaksi> transaksiList = new ArrayList<>();
-        String sql = "SELECT id, jenis, kategori, jumlah, tanggal, keterangan FROM Transaksi WHERE substr(tanggal, 1, 7) = ? ORDER BY tanggal DESC";
-
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, year + "-" + month);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Transaksi transaksi = new Transaksi(
-                        rs.getInt("id"),
-                        rs.getString("jenis"),
-                        rs.getString("kategori"),
-                        rs.getLong("jumlah"),
-                        rs.getString("tanggal"),
-                        rs.getString("keterangan")
-                );
-                transaksiList.add(transaksi);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return transaksiList;
-    }
 }
 
