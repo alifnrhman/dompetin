@@ -1,4 +1,4 @@
-<h1 align="center">More actions
+<h1 align="center">
   <br>
   <img src="src/assets/logo.png" alt="DOMPETIN" width="128">
   <br>
