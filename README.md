@@ -1,12 +1,12 @@
-<h1 align="center">
+<h1 align="center">More actions
   <br>
-  <img src="app/src/main/res/drawable/logo_sehatbersama.png" alt="SehatBersama" width="128">
+  <img src="src/assets/logo.png" alt="DOMPETIN" width="128">
   <br>
-  SehatBersama
+  DOMPETIN
   <br>
 </h1>
 
-<h4 align="center">A simple and focused Android app to track your daily calorie intake and water consumption</h4>
+<h4 align="center">A simple and minimalistic personal finance manager built with Java Swing and SQLite</h4>
 <p align="center"><i>Note: This application is developed in Bahasa Indonesia.</i></p>
 
 <p align="center">
@@ -18,71 +18,48 @@
   <a href="#license">License</a>
 </p>
 
----
-
 ## Key Features
 
-* **User authentication** with Firebase (email & password)
-* **Add and edit profile picture** (stored in Cloudinary)
-* **Daily calorie tracking** by entering food name and calorie amount
-* **View calorie intake in a structured table**
-* **Daily calorie target input**
-* **Fixed daily water intake target (2000ml)**
-* Simple and responsive user interface
-* Data stored in **Firebase Realtime Database** for cross-device access
-* Focused on **today’s data only** (no historical view yet)
-* Developed entirely with **Java** using Android Studio
-
----
+* Input and manage **income** and **expenses**
+* Auto-calculate **total balance**, **total income**, and **total expenses**
+* Filter transactions by **day** or **month**
+* Add, edit, and delete records easily
+* Form validation to prevent empty fields
+* Readable date format (e.g., *Minggu, 15 Juni 2025*)
+* Highlighted money amounts to differentiate between income and expenses
+* Modern look and feel with **FlatLaf**
+* Minimalistic icon for branding
 
 ## How To Use
 
-To run this app on your device:
+To run this application, you'll need [Java](https://www.oracle.com/java/technologies/javase-downloads.html) installed on your system.
 
-### Requirements:
-- Android Studio installed
-- Firebase project setup
-- Cloudinary account (for image storage)
-- Device or emulator running Android 6.0+
+> ⚠️ **Important:** This application uses IntelliJ GUI Designer (`.form` files). Therefore, it **must be opened and run from IntelliJ IDEA**. Running directly from terminal or other IDEs like VS Code will likely result in errors such as `IllegalComponentStateException` due to missing generated UI code.
 
 ### Steps:
 
 1. Clone or download the repository.
-2. Open the project in **Android Studio**.
-3. Connect the app to your **Firebase** project:
-   - Enable **Authentication** (email/password)
-   - Set up **Realtime Database**
-4. Add your **Cloudinary credentials** to the project (for profile photo upload).
-5. Build and run the app on an emulator or physical Android device.
-
-> ⚠️ **Note:** You need internet connection to log in, store, and retrieve user data from Firebase.
-
----
+2. Open the project in **IntelliJ IDEA**.
+3. Make sure `sqlite-jdbc` and `FlatLaf` JAR files are present in the `lib` folder and properly added to your project dependencies.
+4. Run the `Main.java` file via IntelliJ.
 
 ## Download
 
-> Coming soon on GitHub Releases or Play Store...
-
----
+> Coming soon...
 
 ## Credits
 
 This project uses:
 
-* [Firebase Authentication](https://firebase.google.com/products/auth)
-* [Firebase Realtime Database](https://firebase.google.com/products/realtime-database)
-* [Cloudinary](https://cloudinary.com/)
-* Java + Android SDK
-
----
+* [FlatLaf](https://www.formdev.com/flatlaf/) for beautiful UI
+* [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc) for local database
+* Java Swing for the GUI
 
 ## Developers
 
 - **Alif Nurahman** — [@alifnrhman](https://github.com/alifnrhman)
 - **Miko Meidilianto** — [@mikomeidilianto](https://github.com/mikomeidilianto)
-- **Muhammad Syahrul Ramadhan** — [@SyahrulDeveloper](https://github.com/SyahrulDeveloper)
-
----
+- **Pandu Bakti Noviaharda** — [@PanduBakti](https://github.com/PanduBakti)
 
 ## License
 
